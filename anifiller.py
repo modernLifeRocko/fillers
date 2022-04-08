@@ -50,7 +50,8 @@ with open('animefillerlist.json','w') as outJson:
 
 outputFile.close()
 #outputListJSON.close()
-    
+
+print(types)    
     
 
 #preemptively useful function to search for the episodes list without having the full name of the show
@@ -64,3 +65,4 @@ def get_eps(name):
   page = bs4.BeautifulSoup(req.get(name), 'html.parser')
   eps = page.select('table.EpisodeList tr')#each row in the table corresponds to one ep
   return eps
+
