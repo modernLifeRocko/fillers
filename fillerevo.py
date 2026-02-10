@@ -9,7 +9,9 @@ percents = np.array([])
 years = np.array([])
 
 for ani in animes:
-  year = int(re.findall('^\d{4}',animes[ani]["Release"])[0])
+  if not animes[ani]["Release"]:
+    continue
+  year = int(re.findall(r'^\d{4}',animes[ani]["Release"])[0])
   years = np.append(years, year)
   total_eps = 0
   filler_eps = 0
@@ -20,7 +22,10 @@ for ani in animes:
       filler_eps += 0.5*len(animes[ani][key])
     elif re.search('[Cc]anon',key) is None:
       filler_eps = len(animes[ani][key])
+  if filler_eps/total_eps == 1:
+    print(ani)
   percents = np.append(percents,100*filler_eps/total_eps)
+  
 
 
 
