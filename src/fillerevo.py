@@ -1,9 +1,10 @@
+#! python3
 import numpy as np
 import matplotlib.pyplot as plt
 import json
 import re
 
-animes = json.loads(open('animefillerlist.json', 'r').read())
+animes = json.loads(open('../data/animefillerlist.json', 'r').read())
 
 # Get a list of years and filler percentage
 percents = np.array([])
@@ -25,7 +26,7 @@ for ani in animes:
       filler_eps = len(animes[ani][key])
   if filler_eps/total_eps == 1:
     print(ani)
-  percents = np.append(percents, 100*filler_eps/total_eps)
+  percents = np.append(percents, 100 * filler_eps/total_eps)
 
 
 plt.scatter(years, percents)
@@ -40,6 +41,6 @@ a, b = np.polyfit(years, percents, 1)
 plt.plot(years, a*years+b, color='red')
 
 
-plt.savefig('plot_evolution.png')
+plt.savefig('../images/plot_evolution.png')
 
 plt.show()
