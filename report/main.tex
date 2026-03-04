@@ -1,8 +1,10 @@
-%!Tex program = lualatex
+%! Tex program = lualatex
 \documentclass{article}
 \usepackage{geometry}
 \usepackage{graphics}
+\usepackage{hyperref}
 \usepackage[backend=biber]{biblatex}
+\addbibresource{fillers.bib}
 
 
 
@@ -21,25 +23,46 @@
 \section{Filler Data}
 \subsection{What is filler?}
 Anime is usually an adaptation of material in other media.
-Filler refers to episodes that don't follow the orignal material.
+Filler refers to episodes that don't follow the original material.
 They do not move the plot forward.
 
-While completely orignal anime do exist, they are the exception rather than the rule.
-
-
+While completely original anime do exist, they are the exception rather than the rule.
 
 \subsection{Source of filler data}
+We take the data about fillers from \href{www.animefillerlist.com}{Anime Filler List}.
+For each anime in its database, we get a classification of the episodes in one of four categories: Manga Canon, Anime Canon, Mixed Canon/Filler, and Filler.In addition, we get some meta data like release dates.
+
+We are interested in getting the following information for each anime:
+\begin{description}
+  \item[Release Year:] The year the first episode aired.
+    For multi-year shows, this biases our data to earlier years.
+    However, we believe that this aptly represents the way shows are run in regards to filler.
+    For example, during the run of Naruto Shippuden it became more common for anime to be released in seasons, but the show maintained its continuous mode of airing.
+  \item[Percentage of filler:] For our purposes, we consider Manga and Anime Canon episodes as $0\%$ filler, mixed episodes as $50\%$ filler, and Filler episodes as $100\%$ filler.
+  We will not make differences between Anime and Manga Canon.
+  \item[Length in episodes:] Total of episodes, all counted regardless of their filler tag.
+\end{description}
+
 
 \section{Exploratory Analysis}
+hello
+
 \subsection{Shape of data: Mapper algorithm}
+hello
 \subsection{Fillers in time}
+Let's say 
   \begin{figure}[!h]
+    \centering
     \includegraphics{../images/plot_evolution.png}
     \caption{Percentage of filler vs Release Year}
   \end{figure}
 
 \subsection{Fillers vs Quality}
+hello
 
 \section{Conclusions}
+hello
+
 \printbibliography
+
 \end{document}
