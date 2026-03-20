@@ -9,6 +9,7 @@ animes = json.loads(open('../data/animefillerlist.json', 'r').read())
 # Get a list of years and filler percentage
 percents = np.array([])
 years = np.array([])
+lengths = np. array([])
 
 for ani in animes:
   if not animes[ani]["Release"]:
@@ -27,20 +28,42 @@ for ani in animes:
   if filler_eps/total_eps == 1:
     print(ani)
   percents = np.append(percents, 100 * filler_eps/total_eps)
+  lengths = np.append(lengths, total_eps)
 
-
-plt.scatter(years, percents)
-plt.xlabel('Years')
-plt.ylabel('Filler percentage')
+# Year vs Percentage of filler
+figTvP, axTvP = plt.subplots()
+axTvP.scatter(years, percents)
+axTvP.set_xlabel('Release Year')
+axTvP.set_ylabel('Filler percentage')
 
 # Linear regression to estimate filler evolution
 
 a, b = np.polyfit(years, percents, 1)
-
-# years = sorted(years)
-plt.plot(years, a*years+b, color='red')
+axTvP.plot(years, a*years+b, color='red')
 
 
-plt.savefig('../images/plot_evolution.png')
+figTvP.savefig('../images/plot_evolution.png')
+
+# Year vs length of anime
+figTvL, axTvL = plt.subplots()
+axTvL.scatter(years, lengths)
+axTvL.set_xlabel('Years')
+axTvL.set_ylabel('Length of anime (episodes)')
+
+a, b = np.polyfit(years, lengths, 1)
+axTvL.plot(years, a*years+b, color='red')
+
+figTvL.savefig('../images/length_evo.png')
+
+# Length vs filler percentage
+figTvL, axTvL = plt.subplots()
+axTvL.scatter(lengths, percents)
+axTvL.set_xlabel('Length of anime (episodes)')
+axTvL.set_ylabel('Filler percentage')
+
+a, b = np.polyfit(lengths, percents, 1)
+axTvL.plot(lengths, a*lengths+b, color='red')
+
+figTvL.savefig('../images/length_precentage.png')
 
 plt.show()
