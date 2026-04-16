@@ -21,7 +21,7 @@ types = []
 
 
 for anime in animeList:
-  animeName = anime.text
+  animeName = anime.text.strip().lower()
   animeRes = req.get('https://www.animefillerlist.com'+anime.get('href'))
   animeRes.raise_for_status()
   epsList = bs4.BeautifulSoup(animeRes.text, 'html.parser').select('table.EpisodeList tbody tr')
