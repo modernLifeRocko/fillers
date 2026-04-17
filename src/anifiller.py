@@ -3,6 +3,7 @@
 
 import requests as req
 import bs4, csv, json
+import mal
 
 
 res = req.get('https://www.animefillerlist.com/shows')
@@ -17,7 +18,9 @@ outputWriterCSV.writerow(['Show', 'Episode', 'Title', 'Type', 'Release'])
 # JSON file setup
 # outputListJSON = open('animefillerlist.json','w')
 animeDict = {}
-types = []
+
+# Tags used by animefillerlist to clasify filler/ canon episodes
+types = ['Manga Canon', 'Anime Canon', 'Filler', 'Mixed Canon/Filler']
 
 
 for anime in animeList:
@@ -37,9 +40,10 @@ for anime in animeList:
     epTitle = ep.select('.Title')[0].getText()
     epNumber = int(ep.select('.Number')[0].getText())
     epType = ep.select('.Type')[0].getText()
-    if epType not in types:
-      types.append(epType)
-      animeDict[animeName][epType] = []
+    # used if unknown clasification of filler tags appear
+    # if epType not in types:
+    #   types.append(epType)
+    #   animeDict[animeName][epType] = []
     epDate = ep.select('.Date')[0].getText()
 
     animeDict[animeName][epType].append(epNumber)
