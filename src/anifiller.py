@@ -4,6 +4,7 @@
 import requests as req
 import bs4, csv, json
 import mal
+import time
 
 
 res = req.get('https://www.animefillerlist.com/shows')
@@ -33,8 +34,19 @@ for anime in animeList:
   releaseYear = epsList[0].select('.Date')[0].getText()
   animeDict[animeName] = {}
   animeDict[animeName]['Release'] = releaseYear
-  for type in types:
-    animeDict[animeName][type] = []
+
+  # get rating from mal
+  time.sleep(10)
+  try:
+    anime_mal_page = mal.get_page(animeName)
+    animeDict[animeName]['rating'] = mal.get_rating(anime_mal_page)
+  except:
+    print(animeName)
+    time.sleep(700)
+    animeDict[animeName]['rating'] = mal.get_rating(mal.get_page(animeName))
+
+  for t in types:
+    animeDict[animeName][t] = []
 
   for ep in epsList:
     epTitle = ep.select('.Title')[0].getText()
@@ -54,8 +66,6 @@ with open('../data/animefillerlist.json', 'w') as outJson:
 
 outputFile.close()
 # outputListJSON.close()
-
-print(types)
 
 
 # preemptively useful function to search for the episodes list without having the full name of the show
