@@ -3,6 +3,12 @@ import bs4
 
 
 def get_page(name):
+  # guarantees that name meets MAL size of search terms restrictions.
+  if len(name) < 3:
+    name = name + '   '
+  elif len(name) >= 100:
+    name = name[:100]
+
   res = req.get('https://myanimelist.net/search/all?cat=all&q='+name)
   soup = bs4.BeautifulSoup(res.text, 'html.parser')
   return soup.select('article .list .information .title a.hoverinfo_trigger')[0]['href']

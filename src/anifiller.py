@@ -36,6 +36,7 @@ for anime in animeList:
   animeDict[animeName]['Release'] = releaseYear
 
   # get rating from mal
+  # has to be purposely slowed down for MAL req restrictions
   time.sleep(10)
   try:
     anime_mal_page = mal.get_page(animeName)
