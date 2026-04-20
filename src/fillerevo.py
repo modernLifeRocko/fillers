@@ -9,17 +9,20 @@ animes = json.loads(open('../data/animefillerlist.json', 'r').read())
 # Get a list of years and filler percentage
 percents = np.array([])
 years = np.array([])
-lengths = np. array([])
+lengths = np.array([])
+ratings = np.array([])
 
 for ani in animes:
   if not animes[ani]["Release"]:
     continue
   year = int(re.findall(r'^\d{4}', animes[ani]["Release"])[0])
   years = np.append(years, year)
+  rating = animes[ani]["rating"]
+  ratings = np.append(ratings, rating)
   total_eps = 0
   filler_eps = 0
   for key in animes[ani]:
-    if key == 'Release': continue
+    if key == 'Release' or key == 'rating': continue
     total_eps += len(animes[ani][key])
     if (re.search('[Cc]anon', key) is not None) and (re.search('[Ff]iller', key) is not None):
       filler_eps += 0.5*len(animes[ani][key])
@@ -56,14 +59,25 @@ axTvL.plot(years, a*years+b, color='red')
 figTvL.savefig('../images/length_evo.png')
 
 # Length vs filler percentage
-figTvL, axTvL = plt.subplots()
-axTvL.scatter(lengths, percents)
-axTvL.set_xlabel('Length of anime (episodes)')
-axTvL.set_ylabel('Filler percentage')
+figLvP, axLvP = plt.subplots()
+axLvP.scatter(lengths, percents)
+axLvP.set_xlabel('Length of anime (episodes)')
+axLvP.set_ylabel('Filler percentage')
 
 a, b = np.polyfit(lengths, percents, 1)
-axTvL.plot(lengths, a*lengths+b, color='red')
+axLvP.plot(lengths, a*lengths+b, color='red')
 
-figTvL.savefig('../images/length_precentage.png')
+figLvP.savefig('../images/length_percentage.png')
+
+# Quality vs filler percentage
+figQvP, axQvP = plt.subplots()
+axQvP.scatter(ratings, percents)
+axQvP.set_xlabel('Anime rating')
+axQvP.set_ylabel('Filler percentage')
+
+a, b = np.polyfit(ratings, percents, 1)
+axQvP.plot(ratings, a*ratings+b, color='red')
+
+figQvP.savefig('../images/quality_percentage.png')
 
 plt.show()
