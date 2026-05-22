@@ -26,6 +26,7 @@ types = ['Manga Canon', 'Anime Canon', 'Filler', 'Mixed Canon/Filler']
 
 for anime in animeList:
   animeName = anime.text.strip().lower()
+  if 'one pace' in animeName: continue
   animeRes = req.get('https://www.animefillerlist.com'+anime.get('href'))
   animeRes.raise_for_status()
   epsList = bs4.BeautifulSoup(animeRes.text, 'html.parser').select('table.EpisodeList tbody tr')
@@ -35,8 +36,9 @@ for anime in animeList:
   animeDict[animeName] = {}
   animeDict[animeName]['Release'] = releaseYear
 
-  # get rating from mal
+  # get rating from MAL
   # has to be purposely slowed down for MAL req restrictions
+  # (not explicitely stated anywhere)
   time.sleep(10)
   try:
     anime_mal_page = mal.get_page(animeName)
@@ -51,6 +53,7 @@ for anime in animeList:
 
   for ep in epsList:
     epTitle = ep.select('.Title')[0].getText()
+
     epNumber = int(ep.select('.Number')[0].getText())
     epType = ep.select('.Type')[0].getText()
     # used if unknown clasification of filler tags appear

@@ -10,7 +10,7 @@ animes = json.loads(open('../data/animefillerlist.json', 'r').read())
 
 
 def aggregate():
-  # Get a list of years and filler percentage
+  # Get a dataframe of years, filler percentage, ratings and lengths, per episode
   percents = np.array([])
   years = np.array([])
   lengths = np.array([])
@@ -41,6 +41,11 @@ def aggregate():
     np.transpose([years, percents, ratings, lengths]),
     columns=['year', 'percent', 'rating', 'length'])
   return dfAnime
+
+
+def create_eps_df():
+  eps_df = pd.read_csv('../data/animefillerlist.csv')
+  return eps_df.dropna()
 
 
 def corr_plots(dfAnime):
@@ -108,5 +113,6 @@ def qtil(x):
 if __name__ == "__main__":
   dfAnime = aggregate()
   df = dfAnime.assign(PercAgg=[qtil(x) for x in dfAnime['percent']])
+  df.to_csv('../data/filler_proportions.csv', index=False)
   sns.histplot(data=df, x='year', binwidth=5, hue='PercAgg', multiple='stack')
   corr_plots(df)
