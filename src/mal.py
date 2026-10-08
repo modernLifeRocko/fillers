@@ -1,17 +1,23 @@
 import requests as req
 import bs4
+from Levenshtein import distance as levd
+import numpy as np
 
 
 def get_page(name):
   # guarantees that name meets MAL size of search terms restrictions.
+  fname = name.lower()
   if len(name) < 3:
     name = name + '   '
   elif len(name) >= 100:
     name = name[:100]
 
-  res = req.get('https://myanimelist.net/search/all?cat=all&q='+name)
+  res = req.get('https://myanimelist.net/search/all?cat=anime&q='+name)
   soup = bs4.BeautifulSoup(res.text, 'html.parser')
-  return soup.select('article .list .information .title a.hoverinfo_trigger')[0]['href']
+  an_ress = soup.select('article .list .information .title a.hoverinfo_trigger')
+  # find the search result closer in the Levenshtein distance
+  mi = np.argmin([levd(fname, a.text.strip().lower()) for a in an_ress])
+  return an_ress[mi]['href']
 
 
 def get_rating(page):
